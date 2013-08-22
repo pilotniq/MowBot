@@ -1,0 +1,83 @@
+
+Initialize:
+- Wait for GPS Fix.
+- Use current position as origin, save it.
+- Calculate length of one longitude and one latitude in cm?
+- For the future, convert GPS coordinates to dx and dy in meters, taking the difference from the origin, and converting each to cm.
+- Magnetic declination: http://www.ngdc.noaa.gov/geomag/WMM/soft.shtml
+- Functions: Calculate geographic north relative direction between two points.
+-            
+
+- Data types:
+ca 111 111 meters per 90 degrees latitude.
+Sign bit
+128k = 17 bits = ca 1 meter.
+       20 bits = ca 1 dm
+       21 bits = ca 1 cm
+
+24 bits = 0.67 cm
+23 bits = 1.32 cm OK
+
+11 111 111 cm / 90 degrees
+
+int32_t longitude, latitude;
+uint16_t distanceCM;
+
+gps_init();
+gps_isAvailable();
+boolan gps_hasFix();
+# gps_setOrigin( long, lat );
+gps_getLongLat( *long, *lat );
+gps_getDirection( long, lat );
+gps_stop();
+
+uint16_t heading;
+
+compass_setDeclination( );
+compass_getHeading();
+compass_floatToHeading( float h );
+compass_headingToFloat( Heading h );
+
+motors_set
+
+Main loop driving to waypoint:
+-get heading, distance to waypoint
+-if distance < targetMargin
+-  done! Go to next waypoint, repeat
+-get current heading
+-if( current heading differs from heading more than headingMargin )
+-  adjust speeds to turn to waypoint direction
+-
+
+- Also, check charge level; go to charger if charge is below certain level.
+
+Motor parameters: Speed at full power
+Max Turn rate
+Motor correction for straight movement
+
+Log.
+
+Obstacle avoidance.
+
+Lawn mowing strategy
+
+Communication?
+Map plot?
+Unit tests.
+TDD.
+
+Date	 Declination 
+( + E  | - W )	      Inclination 
+( + D  | - U )	      Horizontal Intensity	 North Comp 
+(+ N  | - S)  East Comp 
+(+ E  | - W)   Vertical Comp 
+(+ D  | - U)   Total Field
+Date: 2013-08-03      
+Declination:  4.78°	 
+Inclination: 72.56°	 
+Horizontal Intensity: 15,349.5 nT	 
+North Component:      15,296.1 nT	 
+East Component:        1,279.9 nT	 
+Vertical Component:   48,871.4 nT	 
+Total FIeld:          51,225.2 nT
+Change/year	 0.13°	  0.01°	  4.9 nT   1.9 nT	   36.3 nT	  33.5 nT	   33.5 nT
